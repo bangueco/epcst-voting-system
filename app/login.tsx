@@ -1,6 +1,23 @@
 import { Button, StyleSheet, Text, TextInput, View } from "react-native"
+import { loginUser } from "@/services/authentication"
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { useState } from "react";
 
 const Login = () => {
+  const navigation = useNavigation<NavigationProp<any>>()
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const onPressLogin = async () => {
+    try {
+      const response = await loginUser(email, password)
+      if (response.user.uid) navigation.navigate("Main")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <>
 
@@ -14,6 +31,7 @@ const Login = () => {
               <Text>Username</Text>
               <TextInput
                 style={styles.textInput}
+                onChangeText={(e) => setEmail(e)}
               />
             </View>
             <View>
@@ -21,10 +39,11 @@ const Login = () => {
               <TextInput
                 style={styles.textInput}
                 secureTextEntry={true}
+                onChangeText={(e) => setPassword(e)}
               />
             </View>
           </View>
-          <Button title="Login" />
+          <Button onPress={onPressLogin} title="Login" />
         </View>
       </View>
 
