@@ -1,6 +1,29 @@
-import { Button, StyleSheet, Text, TextInput, View } from "react-native"
+import { useState } from "react"
+import { registerUser } from "../services/authentication"
+import { Button, StyleSheet, Text, TextInput, View, Alert, Pressable } from "react-native"
+import { useNavigation, NavigationProp } from "@react-navigation/native";
 
 const Register = () => {
+  const navigation = useNavigation<NavigationProp<any>>();
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const onPressRegister = async () => {
+    try {
+      const response = await registerUser(email, password)
+
+      if (response.user) {
+        Alert.alert('Registerd successfully')
+        navigation.navigate("Login")
+      }
+
+    } catch(error) {
+      return Alert.alert('Email already in use')
+    }
+  }
+
+
   return (
     <>
 
@@ -14,6 +37,7 @@ const Register = () => {
               <Text>Username</Text>
               <TextInput
                 style={styles.textInput}
+                onChangeText={(e) => setEmail(e)}
               />
             </View>
             <View>
@@ -21,10 +45,17 @@ const Register = () => {
               <TextInput
                 style={styles.textInput}
                 secureTextEntry={true}
+                onChangeText={(e) => setPassword(e)}
               />
             </View>
           </View>
-          <Button title="Register" />
+          <Button 
+            title="Register"
+            onPress={onPressRegister}
+          />
+          <Pressable onPress={() => navigation.navigate("Login")}>
+            <Text>Already have account? Login here</Text>
+          </Pressable>
         </View>
       </View>
 
