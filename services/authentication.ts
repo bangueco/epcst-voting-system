@@ -1,5 +1,5 @@
 import { app } from "../firebaseConfig"
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 
 const auth = getAuth(app)
 
@@ -8,6 +8,12 @@ const registerUser = async (email: any, password: any) => {
   return response
 }
 
+const loginUser = async (email: any, password: any) => {
+  const response = await (signInWithEmailAndPassword(auth, email, password))
+  return response
+}
+
 export {
-  registerUser
+  registerUser,
+  loginUser
 }
