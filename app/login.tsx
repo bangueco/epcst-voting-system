@@ -1,10 +1,28 @@
-import { Button, StyleSheet, Text, TextInput, View } from "react-native"
+import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native"
 import { loginUser } from "@/services/authentication"
 import { useNavigation, NavigationProp } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { app } from "../firebaseConfig"
+import { getAuth } from "firebase/auth";
 
 const Login = () => {
   const navigation = useNavigation<NavigationProp<any>>()
+  const auth = getAuth(app)
+  const [user, setUser] = useState()
+
+  function onAuthStateChanged(user:any) {
+    setUser(user);
+  }
+
+  useEffect(() => {
+    const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (user) {
+    navigation.navigate("Main")
+  }
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -12,9 +30,10 @@ const Login = () => {
   const onPressLogin = async () => {
     try {
       const response = await loginUser(email, password)
+      Alert.alert('Login successfully')
       if (response.user.uid) navigation.navigate("Main")
     } catch (error) {
-      console.log(error)
+      Alert.alert(error.message)
     }
   }
 
