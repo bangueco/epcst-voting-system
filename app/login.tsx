@@ -4,25 +4,28 @@ import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 
 import { app } from "../firebaseConfig"
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Login = () => {
   const navigation = useNavigation<NavigationProp<any>>()
   const auth = getAuth(app)
-  const [user, setUser] = useState()
-
-  function onAuthStateChanged(user:any) {
-    setUser(user);
-  }
+  const [authUser, setAuthUser] = useState()
 
   useEffect(() => {
-    const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+    onAuthStateChanged(auth, (user:any) => {
+      if (user) {
+        setAuthUser(user)
+      } else {
+        setAuthUser(undefined)
+      }
+    })
   }, []);
 
-  if (user) {
-    navigation.navigate("Main")
-  }
+  useEffect(() => {
+    if (authUser) {
+      navigation.navigate("Main");
+    }
+  }, [authUser]);
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -35,43 +38,47 @@ const Login = () => {
         Alert.alert('Login successfully')
         navigation.navigate("Main")
       }
-      
+
     } catch (error) {
       Alert.alert(error.message)
     }
   }
 
-  return (
-    <>
-
-      {/* TODO: Change user interface when backend is fully functional */}
-
-      <View style={styles.container}>
-        <View style={styles.loginContainer}>
-          <Text style={{textAlign: 'center'}}>EPCST VOTING SYSTEM</Text>
-          <View>
+  if (!authUser) {
+    return (
+      <>
+  
+        {/* TODO: Change user interface when backend is fully functional */}
+  
+        <View style={styles.container}>
+          <View style={styles.loginContainer}>
+            <Text style={{textAlign: 'center'}}>EPCST VOTING SYSTEM</Text>
             <View>
-              <Text>Username</Text>
-              <TextInput
-                style={styles.textInput}
-                onChangeText={(e) => setEmail(e)}
-              />
+              <View>
+                <Text>Username</Text>
+                <TextInput
+                  style={styles.textInput}
+                  onChangeText={(e) => setEmail(e)}
+                />
+              </View>
+              <View>
+                <Text>Password</Text>
+                <TextInput
+                  style={styles.textInput}
+                  secureTextEntry={true}
+                  onChangeText={(e) => setPassword(e)}
+                />
+              </View>
             </View>
-            <View>
-              <Text>Password</Text>
-              <TextInput
-                style={styles.textInput}
-                secureTextEntry={true}
-                onChangeText={(e) => setPassword(e)}
-              />
-            </View>
+            <Button onPress={onPressLogin} title="Login" />
           </View>
-          <Button onPress={onPressLogin} title="Login" />
         </View>
-      </View>
-
-    </>
-  )
+  
+      </>
+    )
+  } else {
+    return null
+  }
 }
 
 const styles = StyleSheet.create({
