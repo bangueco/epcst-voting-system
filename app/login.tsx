@@ -30,8 +30,12 @@ const Login = () => {
   const onPressLogin = async () => {
     try {
       const response = await loginUser(email, password)
-      Alert.alert('Login successfully')
-      if (response.user.uid) navigation.navigate("Main")
+
+      if (response.user.uid) {
+        Alert.alert('Login successfully')
+        navigation.navigate("Main")
+      }
+      
     } catch (error) {
       Alert.alert(error.message)
     }
