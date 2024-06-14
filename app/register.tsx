@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { registerUser } from "../services/authentication"
+import { writeUserData } from "@/services/database";
 import { Button, StyleSheet, Text, TextInput, View, Alert, Pressable } from "react-native"
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 
@@ -32,9 +33,11 @@ const Register = () => {
 
   const onPressRegister = async () => {
     try {
+
       const response = await registerUser(email, password)
 
       if (response.user) {
+        writeUserData(response.user.uid, email, password)
         Alert.alert('Registerd successfully')
         navigation.navigate("Login")
       }
