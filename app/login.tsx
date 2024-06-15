@@ -4,7 +4,7 @@ import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 
 import { app } from "../firebaseConfig"
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "firebase/auth";
 
 const Login = () => {
   const navigation = useNavigation<NavigationProp<any>>()
@@ -32,6 +32,8 @@ const Login = () => {
 
   const onPressLogin = async () => {
     try {
+      await setPersistence(auth, browserLocalPersistence)
+      
       const response = await loginUser(email, password)
 
       if (response.user.uid) {
