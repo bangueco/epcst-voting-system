@@ -3,12 +3,11 @@ import { loginUser } from "@/services/authentication"
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 
-import { app } from "../firebaseConfig"
-import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { auth } from "../firebaseConfig"
+import { onAuthStateChanged, setPersistence } from "firebase/auth";
 
 const Login = () => {
   const navigation = useNavigation<NavigationProp<any>>()
-  const auth = getAuth(app)
   const [authUser, setAuthUser] = useState()
 
   useEffect(() => {
@@ -32,8 +31,6 @@ const Login = () => {
 
   const onPressLogin = async () => {
     try {
-      await setPersistence(auth, browserLocalPersistence)
-      
       const response = await loginUser(email, password)
 
       if (response.user.uid) {
