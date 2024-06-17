@@ -4,11 +4,10 @@ import { writeUserData } from "@/services/database";
 import { Button, StyleSheet, Text, TextInput, View, Alert, Pressable } from "react-native"
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 
-import { app } from "../firebaseConfig"
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebaseConfig"
+import { onAuthStateChanged } from "firebase/auth";
 
 const Register = () => {
-  const auth = getAuth(app)
   const navigation = useNavigation<NavigationProp<any>>();
 
   const [authUser, setAuthUser] = useState()
