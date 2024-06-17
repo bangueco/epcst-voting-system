@@ -6,6 +6,7 @@ const db = getDatabase(app)
 const writeUserData = (uid:any, email:any, username:any, password:any) => {
   set(ref(db, `users/${uid}`), {
     email: email,
+    username: username,
     password: password,
     user_type: 'normal'
   })
