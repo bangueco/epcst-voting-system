@@ -12,6 +12,7 @@ const Register = () => {
 
   const [authUser, setAuthUser] = useState()
   const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const Register = () => {
       const response = await registerUser(email, password)
 
       if (response.user) {
-        writeUserData(response.user.uid, email, password)
+        writeUserData(response.user.uid, email, username, password)
         Alert.alert('Registerd successfully')
         navigation.navigate("Login")
       }
@@ -58,10 +59,17 @@ const Register = () => {
             <Text style={{textAlign: 'center'}}>EPCST VOTING SYSTEM</Text>
             <View>
               <View>
-                <Text>Username</Text>
+                <Text>Email</Text>
                 <TextInput
                   style={styles.textInput}
                   onChangeText={(e) => setEmail(e)}
+                />
+              </View>
+              <View>
+                <Text>Username</Text>
+                <TextInput
+                  style={styles.textInput}
+                  onChangeText={(e) => setUsername(e)}
                 />
               </View>
               <View>
