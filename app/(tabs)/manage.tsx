@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { Button, Pressable, StyleSheet, Text, TextInput, View } from "react-native"
+import { Alert, Button, Pressable, StyleSheet, Text, TextInput, View } from "react-native"
+import { writeStudentData } from "@/services/database"
 
 const Manage = () => {
 
@@ -7,6 +8,15 @@ const Manage = () => {
   const [studentGrade, setStudentGrade] = useState('')
   const [studentPosition, setStudentPosition] = useState('')
   const [studentParty, setStudentParty] = useState('')
+
+  const onPressWriteStudent = () => {
+    writeStudentData(studentName, studentGrade, studentPosition, studentParty)
+    Alert.alert('Success')
+    setStudentName('')
+    setStudentGrade('')
+    setStudentPosition('')
+    setStudentParty('')
+  }
 
   return (
     <View style={styles.manageContainer}>
@@ -45,7 +55,7 @@ const Manage = () => {
         </View>
       </View>
       <View>
-        <Pressable style={styles.pressableButton}>
+        <Pressable style={styles.pressableButton} onPress={onPressWriteStudent}>
           <Text style={{fontSize: 20, color: 'white'}}>Submit</Text>
         </Pressable>
       </View>
