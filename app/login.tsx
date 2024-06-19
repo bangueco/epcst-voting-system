@@ -54,7 +54,7 @@ const Login = () => {
             <Text style={{textAlign: 'center'}}>EPCST VOTING SYSTEM</Text>
             <View>
               <View>
-                <Text>Username</Text>
+                <Text>Email</Text>
                 <TextInput
                   style={styles.textInput}
                   onChangeText={(e) => setEmail(e)}
