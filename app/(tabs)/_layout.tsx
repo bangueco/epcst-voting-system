@@ -3,13 +3,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import Home from './home'
 import Profile from './profile'
+import Manage from './manage'
 
 const TabLayout = () => {
 
   const Tab = createBottomTabNavigator()
 
   return (
-    <Tab.Navigator screenOptions={{ tabBarActiveTintColor: 'blue' }}>
+    <Tab.Navigator screenOptions={{ tabBarActiveTintColor: 'green'}}>
       <Tab.Screen
         name="Home"
         component={Home}
@@ -22,7 +23,15 @@ const TabLayout = () => {
         name="Profile"
         component={Profile}
         options={{
-          title: 'Profile',
+          title: 'Your Profile',
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Manage"
+        component={Manage}
+        options={{
+          title: 'Manage Students',
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
         }}
       />
