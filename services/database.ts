@@ -19,7 +19,7 @@ const writeStudentData = (name:any, grade:any, position:any, party:any) => {
     grade: grade,
     position: position,
     party: party,
-    votes: []
+    votes: 0
   });
 }
 
