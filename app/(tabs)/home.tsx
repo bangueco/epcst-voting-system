@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Pressable, StyleSheet, Text, View } from "react-native"
 import {app} from "../../firebaseConfig"
-import { getDatabase, onValue, ref, runTransaction } from "firebase/database"
+import { get, getDatabase, onValue, ref, runTransaction } from "firebase/database"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 interface Student {
@@ -60,6 +60,13 @@ const Home = () => {
     const studentVoteRef = ref(db, `/students/${studentId}/votes`);
 
     try {
+
+      const voteSnapshot = await get(voteRef);
+      
+      if (voteSnapshot.exists()) {
+        throw new Error("User has already voted for this student");
+      }
+
       await runTransaction(voteRef, (currentData) => {
         if (currentData === null) {
           // User has not voted for this student yet
