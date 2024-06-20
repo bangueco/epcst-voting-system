@@ -100,7 +100,7 @@ const Manage = () => {
             <DataTable.Title>Actions</DataTable.Title>
           </DataTable.Header>
           {students.map(student => (
-            <DataTable.Row key={student.id}>
+            <DataTable.Row style={{backgroundColor: 'white'}} key={student.id}>
               <DataTable.Cell>{student.name}</DataTable.Cell>
               <DataTable.Cell>{student.grade}</DataTable.Cell> 
               <DataTable.Cell>{student.position}</DataTable.Cell>
