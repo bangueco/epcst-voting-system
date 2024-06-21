@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native"
 import {app} from "../../firebaseConfig"
 import { get, getDatabase, onValue, ref, runTransaction } from "firebase/database"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -62,9 +62,9 @@ const Home = () => {
     try {
 
       const voteSnapshot = await get(voteRef);
-      
+
       if (voteSnapshot.exists()) {
-        throw new Error("User has already voted for this student");
+        throw new Error("You have already voted here.");
       }
 
       await runTransaction(voteRef, (currentData) => {
@@ -85,7 +85,7 @@ const Home = () => {
         }
       });
     } catch (error) {
-      console.error("Error voting: ", error);
+      Alert.alert(error.message)
     }
   }
 
